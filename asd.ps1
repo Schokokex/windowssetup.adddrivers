@@ -17,7 +17,12 @@ attrib -R $targetDrive\sources\install.esd
 Export-WindowsImage -SourceImagePath $targetDrive\sources\install.esd -SourceIndex 4 -DestinationImagePath $targetDrive\sources\install.wim -CompressionType max -CheckIntegrity 
 rm $targetDrive\sources\install.esd
 
+
 mkdir $targetDrive\wim
 Mount-WindowsImage -ImagePath $targetDrive\sources\install.wim -Index 1 -Path $targetDrive\wim
+Add-WindowsDriver -Path $targetDrive\wim -Driver $targetDrive\drivers -Recurse
+Dismount-WindowsImage -Path $targetDrive\wim  -Save
+
+Mount-WindowsImage -ImagePath $targetDrive\sources\boot.wim -Index 1 -Path $targetDrive\wim
 Add-WindowsDriver -Path $targetDrive\wim -Driver $targetDrive\drivers -Recurse
 Dismount-WindowsImage -Path $targetDrive\wim  -Save
